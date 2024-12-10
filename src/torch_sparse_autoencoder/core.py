@@ -10,7 +10,7 @@ def default_sparsity_loss(hidden: torch.Tensor) -> torch.Tensor:
     return torch.mean(torch.abs(hidden))
 
 
-class StopForwardHook(Exception):
+class StopForwardHookException(Exception):
     pass
 
 
@@ -100,7 +100,7 @@ class SparseAutoencoderManager:
             self.optimizer.step()
             del hidden, reconstruction, loss
             if stop_in_hook:
-                raise StopForwardHook
+                raise StopForwardHookException
 
         handle = self.layer.register_forward_hook(hook)
         for i in range(num_epochs):
@@ -109,7 +109,7 @@ class SparseAutoencoderManager:
             ):
                 try:
                     self.model(batch[0].to(self.device))
-                except StopForwardHook:
+                except StopForwardHookException:
                     pass
         handle.remove()
 
@@ -118,11 +118,11 @@ class SparseAutoencoderManager:
         Returns:
             encoder features of shape (hidden_dim, input_dim)
         """
-        return self.sparse_autoencoder.encoder.weight.T.detach()
+        return self.sparse_autoencoder.encoder.weight.detach()
 
     def get_decoder_features(self) -> torch.Tensor:
         """
         Returns:
             decoder features of shape (hidden_dim, input_dim)
         """
-        return self.sparse_autoencoder.decoder.weight.detach()
+        return self.sparse_autoencoder.decoder.weight.T.detach()
