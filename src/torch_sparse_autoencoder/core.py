@@ -4,33 +4,8 @@ from torch import nn
 from torch.utils.data import Dataset, DataLoader, TensorDataset
 from torch.functional import F
 from typing import Any, Type, Callable
-
-
-def default_sparsity_loss(hidden: torch.Tensor) -> torch.Tensor:
-    return torch.mean(torch.abs(hidden))
-
-
-class StopForwardHookException(Exception):
-    pass
-
-
-class SparseAutoencoder(nn.Module):
-    def __init__(self, input_dim: int, hidden_dim: int) -> None:
-        super(SparseAutoencoder, self).__init__()
-        self.encoder: nn.Linear = nn.Linear(input_dim, hidden_dim)
-        self.decoder: nn.Linear = nn.Linear(hidden_dim, input_dim)
-
-    def forward(self, x: torch.Tensor) -> tuple[torch.Tensor, torch.Tensor]:
-        """
-        Args:
-            x: input tensor of shape (batch_size, input_dim)
-        Returns:
-            hidden: hidden representation of the input tensor of shape (batch_size, hidden_dim)
-            output: output tensor of shape (batch_size, input_dim)
-        """
-        hidden = torch.relu(self.encoder(x))
-        reconstruction = self.decoder(hidden)
-        return hidden, reconstruction
+from .utils import *
+from .sae import *
 
 
 class SparseAutoencoderManager:
@@ -74,8 +49,11 @@ class SparseAutoencoderManager:
             recon_loss: reconstruction loss function
             sparsity_loss: sparsity loss function
             sparsity_weight: weight to apply to the sparsity loss
-            learning_rate: learning rate for the optimizer
             verbose: whether to display a progress bar
+            learning_rate: learning rate for the optimizer
+            stop_in_hook: whether the model should run a full forward pass
+            or just run until it first generates the activations for the
+            target layer
         """
         self.model.eval()
         self.layer.eval()

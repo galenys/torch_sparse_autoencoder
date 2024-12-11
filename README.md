@@ -15,11 +15,22 @@ from torch_sparse_autoencoder import SparseAutoencoderManager
 
 # Create a sparse autoencoder
 manager = SparseAutoencoderManager(
-    model,
-    layer=model.model.layers[0].self_attn.o_proj.weight.shape,
-    sparse_dim=4000,
+    model=model,
+    layer=target_layer,
+    activation_dim=activation_dim,
+    sparse_dim=activation_dim*4,
     device=device
 )
+
+# Train the autoencoder
+manager.train(
+    torch_dataset,
+    num_epochs=5,
+    batch_size=4,
+    sparsity_weight=1e-3,
+    verbose=True
+)
+
 ```
 
 ## License
