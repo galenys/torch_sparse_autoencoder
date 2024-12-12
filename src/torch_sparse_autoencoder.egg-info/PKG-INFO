@@ -1,0 +1,55 @@
+Metadata-Version: 2.1
+Name: torch_sparse_autoencoder
+Version: 0.1.0
+Summary: A sparse autoencoder implementation in Python for the PyTorch library
+Home-page: https://github.com/galenys/torch_sparse_autoencoder
+Author: Shiv Bhatia
+Author-email: shivbhatia10@gmail.com
+Classifier: Programming Language :: Python :: 3
+Classifier: License :: OSI Approved :: MIT License
+Classifier: Operating System :: OS Independent
+Requires-Python: >=3.11
+Description-Content-Type: text/markdown
+License-File: LICENSE
+Requires-Dist: numpy
+Requires-Dist: torch
+Requires-Dist: tqdm
+
+# Torch Sparse Autoencoder
+
+A Python library for implementing sparse autoencoders using PyTorch.
+
+## Installation
+
+```bash
+pip install torch-sparse-autoencoder
+```
+
+## Usage
+
+```python
+from torch_sparse_autoencoder import SparseAutoencoderManager
+
+# Create a sparse autoencoder
+manager = SparseAutoencoderManager(
+    model=model,
+    layer=target_layer,
+    activation_dim=activation_dim,
+    sparse_dim=activation_dim*4,
+    device=device
+)
+
+# Train the autoencoder
+manager.train(
+    torch_dataset,
+    num_epochs=5,
+    batch_size=4,
+    sparsity_weight=1e-3,
+    verbose=True
+)
+
+```
+
+## License
+
+This project is licensed under the MIT License - see the LICENSE file for details.

@@ -1,0 +1,14 @@
+LICENSE
+README.md
+pyproject.toml
+setup.cfg
+src/torch_sparse_autoencoder/__init__.py
+src/torch_sparse_autoencoder/core.py
+src/torch_sparse_autoencoder/sae.py
+src/torch_sparse_autoencoder/utils.py
+src/torch_sparse_autoencoder.egg-info/PKG-INFO
+src/torch_sparse_autoencoder.egg-info/SOURCES.txt
+src/torch_sparse_autoencoder.egg-info/dependency_links.txt
+src/torch_sparse_autoencoder.egg-info/requires.txt
+src/torch_sparse_autoencoder.egg-info/top_level.txt
+tests/tests_core.py
